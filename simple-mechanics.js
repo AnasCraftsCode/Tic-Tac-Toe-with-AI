@@ -2,6 +2,12 @@ let cells = document.querySelectorAll(".cell");
 let restartbtn = document.getElementById("restartBtn");
 let is_x_turn = true;
 
+let x_score_e1 = document.querySelector(".X_score");
+let o_score_e1 = document.querySelector(".O_score");
+
+let x_score = 0;
+let o_score = 0;
+
 const win_combos = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
     [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
@@ -29,12 +35,24 @@ const win_combos = [
   }
 
   function checkWin() {
-    return win_combos.some(comb => {
+    const current_player =is_x_turn ? "X" : "O";
+
+    const won = win_combos.some(comb => {
         return comb.every(index => {
-            return cells[index].textContent === (is_x_turn ? "X" : "O");
+            return cells[index].textContent === current_player;
         });
     });
 
+    if (won) {
+        if(current_player === "X") {
+            x_score++;
+            x_score_e1.textContent = `X: ${x_score}`;
+        } else {
+            o_score++;
+            o_score_e1.textContent = `O: ${o_score}`;
+        }
+    }
+    return won;
   }
 
   function restart_game() {
